@@ -91,10 +91,11 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKERHUB_CREDENTIALS_ID) {
-                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
-                    }
+                withCredentials([usernamePassword(credentialsId: 'Docker_Hub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat """
+                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                        docker push %DOCKER_IMAGE%:%DOCKER_TAG%
+                    """
                 }
             }
         }
