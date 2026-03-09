@@ -73,7 +73,7 @@ pipeline {
 
         stage('Publish Coverage Report') {
             steps {
-                jacoco()
+                recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
             }
         }
 
@@ -103,7 +103,7 @@ pipeline {
     post {
         always {
             junit '**/target/surefire-reports/*.xml'
-            jacoco execPattern: '**/target/jacoco.exec'
+            recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
         }
     }
 }
