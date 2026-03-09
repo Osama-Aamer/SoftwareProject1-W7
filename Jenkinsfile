@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
-        DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
+        DOCKERHUB_CREDENTIALS_ID = 'docker-hub-cred'
         DOCKER_IMAGE = 'osamaaa1/calculator-app'
         DOCKER_TAG = 'latest'
     }
@@ -91,7 +91,7 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'Docker_Hub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     bat """
                         docker login -u %DOCKER_USER% -p %DOCKER_PASS%
                         docker push %DOCKER_IMAGE%:%DOCKER_TAG%
